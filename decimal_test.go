@@ -2285,9 +2285,6 @@ func TestRoundBankAnomaly(t *testing.T) {
 	}
 }
 
-// Trig tests
-
-// For Atan
 func TestAtan(t *testing.T) {
 	inps := []string{
 		"-2.91919191919191919",
@@ -2297,7 +2294,7 @@ func TestAtan(t *testing.T) {
 		"0.33",
 		"1.0",
 		"5.0",
-		"10",
+		"10.0",
 	  "11000020.2407442310156021090304691671842603586882014729198302312846062338790031898128063403419218957424",
 	}
 	sols := []string{
@@ -2327,7 +2324,6 @@ func TestAtan(t *testing.T) {
 	}
 }
 
-// For Sin
 func TestSin(t *testing.T) {
 	inps := []string{
 		"-2.91919191919191919",
@@ -2337,7 +2333,7 @@ func TestSin(t *testing.T) {
 		"0.33",
 		"1.0",
 		"5.0",
-		"10",
+		"10.0",
 	  "11000020.2407442310156021090304691671842603586882014729198302312846062338790031898128063403419218957424",
 	}
 	sols := []string{
@@ -2367,7 +2363,6 @@ func TestSin(t *testing.T) {
 	}
 }
 
-// For Cos
 func TestCos(t *testing.T) {
 	inps := []string{
 		"-2.91919191919191919",
@@ -2377,7 +2372,7 @@ func TestCos(t *testing.T) {
 		"0.33",
 		"1.0",
 		"5.0",
-		"10",
+		"10.0",
 	  "11000020.2407442310156021090304691671842603586882014729198302312846062338790031898128063403419218957424",
 	}
 	sols := []string{
@@ -2407,7 +2402,6 @@ func TestCos(t *testing.T) {
 	}
 }
 
-// For Tan
 func TestTan(t *testing.T) {
 	inps := []string{
 		"-2.91919191919191919",
@@ -2417,7 +2411,7 @@ func TestTan(t *testing.T) {
 		"0.33",
 		"1.0",
 		"5.0",
-		"10",
+		"10.0",
 	  "11000020.2407442310156021090304691671842603586882014729198302312846062338790031898128063403419218957424",
 	}
 	sols := []string{
@@ -2441,6 +2435,48 @@ func TestTan(t *testing.T) {
 			t.FailNow()
 		}
 		a := d.Tan()
+		if !a.Equal(s) {
+			t.Errorf("expected %s, got %s", s, a)
+		}
+	}
+}
+
+func TestLdexp(t *testing.T) {
+	inps := [][]string{
+		[]string{"25", "3"},
+		[]string{"25", "1"},
+		[]string{"25", "0"},
+		[]string{"2.7", "-4"},
+		[]string{"0.5", "100"},
+		[]string{"0", "10"},
+		[]string{"-3", "2"},
+	}
+	sols := []string{
+		"200",
+		"50",
+		"25",
+		"0.16875",
+		"633825300114114700748351602688",
+		"0",
+		"-12",
+	}
+	for i, inp := range inps {
+		x, err := NewFromString(inp[0])
+		if err != nil {
+			t.Errorf("error 1: %v", err)
+			t.FailNow()
+		}
+		y, err := strconv.ParseInt(inp[1], 10, 64)
+		if err != nil {
+			t.Errorf("error 2: %v", err)
+			t.FailNow()
+		}
+		s, err := NewFromString(sols[i])
+		if err != nil {
+			t.Errorf("error 3: %v", err)
+			t.FailNow()
+		}
+		a := Ldexp(x, int(y))
 		if !a.Equal(s) {
 			t.Errorf("expected %s, got %s", s, a)
 		}
